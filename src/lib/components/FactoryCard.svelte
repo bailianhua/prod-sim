@@ -1,63 +1,66 @@
 <script lang="ts">
-	import { Factory } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
-	import * as Select from '$lib/components/ui/select';
-	import { Input } from '$lib/components/ui/input';
-	import { Label } from '$lib/components/ui/label';
+	import type { slot } from '$lib/model/factory';
+	import AddItemCard from '$lib/components/AddItemCard.svelte';
+	import Input from './ui/input/input.svelte';
+	import Label from './ui/label/label.svelte';
+	import { Trash } from 'lucide-svelte';
+	import { factoryStore } from '$lib/model/factory';
 
-	const frameworks = [
-		{
-			value: 'sveltekit',
-			label: 'SvelteKit'
-		},
-		{
-			value: 'next',
-			label: 'Next.js'
-		},
-		{
-			value: 'astro',
-			label: 'Astro'
-		},
-		{
-			value: 'nuxt',
-			label: 'Nuxt.js'
-		}
-	];
+	export let name: string;
+	export let slots: slot[];
+
+	function removeItem(index: number) {
+		factoryStore.update((value) => {
+			const existingFactory = value.find((factory) => factory.name === name);
+
+			if (existingFactory) {
+				const updatedSlots = [
+					...existingFactory.slots.slice(0, index),
+					...existingFactory.slots.slice(index + 1)
+				];
+				const updatedFactory = { ...existingFactory, slots: updatedSlots };
+				return value.map((factory) => (factory.name === name ? updatedFactory : factory));
+			}
+
+			return value;
+		});
+	}
 </script>
 
-<Card.Root class="w-[350px]">
+<Card.Root class="w-[380px]">
 	<Card.Header>
-		<Card.Title>Create project</Card.Title>
-		<Card.Description>Deploy your new project in one-click.</Card.Description>
+		<Card.Title>{name} <AddItemCard factoryName={name} /></Card.Title>
 	</Card.Header>
-	<Card.Content>
-		<form>
-			<div class="grid w-full items-center gap-4">
-				<div class="flex flex-col space-y-1.5">
-					<Label for="name">Name</Label>
-					<Input id="name" placeholder="Name of your project" />
-				</div>
-				<div class="flex flex-col space-y-1.5">
-					<Label for="framework">Framework</Label>
-					<Select.Root>
-						<Select.Trigger id="framework">
-							<Select.Value placeholder="Select" />
-						</Select.Trigger>
-						<Select.Content>
-							{#each frameworks as framework}
-								<Select.Item value={framework.value} label={framework.label}
-									>{framework.label}</Select.Item
-								>
-							{/each}
-						</Select.Content>
-					</Select.Root>
-				</div>
+	<Card.Content class="grid gap-4">
+		{#if slots.length > 0}
+			<div>
+				{#each slots as slot, index (index)}
+					<div class="flex w-full max-w-sm items-center gap-1.5">
+						<Label class="w-4/5" for="item">{slot.item}</Label>
+						<Input class="w-1/5" type="text" id="item" value={slot.amount} readonly />
+						<Button on:click={() => removeItem(index)} variant="destructive_icon" size="icon" class="hover:decoration-blue-400">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="lucide lucide-x"
+							>
+								<path d="M18 6 6 18" />
+								<path d="m6 6 12 12" />
+							</svg>
+						</Button>
+					</div>
+				{/each}
 			</div>
-		</form>
+		{/if}
 	</Card.Content>
-	<Card.Footer class="flex justify-between">
-		<Button variant="outline">Cancel</Button>
-		<Button>Deploy</Button>
-	</Card.Footer>
+	<Card.Footer></Card.Footer>
 </Card.Root>

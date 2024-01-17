@@ -1,62 +1,22 @@
-<script>
-	let inputRate = 0;
-	let outputRate = 0;
-	let ratio = 0;
+<script lang="ts">
+	import { factoryStore } from '$lib/model/factory';
+	import type { FactoryInterface } from '$lib/model/factory';
+	import FactoryCard from '$lib/components/FactoryCard.svelte';
+	import ExcessMaterial from '$lib/components/ExcessMaterial.svelte';
 
-	function calculateRatio() {
-		if (!isNaN(inputRate) && !isNaN(outputRate)) {
-			ratio = outputRate / inputRate;
-		} else {
-			ratio = NaN;
-		}
-	}
+	let factories: FactoryInterface[] = [];
+	const unsubscribe = factoryStore.subscribe((value) => {
+		factories = value;
+	});
 </script>
 
 <main>
-	<h1>Factorio Production Calculator</h1>
-	<form on:submit|preventDefault={calculateRatio}>
-		<label for="inputRate">Input Rate:</label>
-		<input type="number" id="inputRate" bind:value={inputRate} step="0.01" required />
-
-		<label for="outputRate">Output Rate:</label>
-		<input type="number" id="outputRate" bind:value={outputRate} step="0.01" required />
-
-		<button type="submit">Calculate</button>
-	</form>
-
-	{#if !isNaN(ratio)}
-		<div>The recommended ratio is {ratio.toFixed(2)}</div>
+	<ExcessMaterial />
+	{#if factories.length !== 0}
+		<div class="my-4 flex gap-4">
+			{#each factories as factory (factory.name)}
+				<FactoryCard name={factory.name} slots={factory.slots} />
+			{/each}
+		</div>
 	{/if}
 </main>
-
-<style>
-	main {
-		max-width: 400px;
-		margin: 0 auto;
-		padding: 20px;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-	label {
-		font-weight: bold;
-	}
-	input {
-		padding: 5px;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-	}
-	button {
-		padding: 10px;
-		background-color: #007bff;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-	div {
-		margin-top: 10px;
-	}
-</style>
