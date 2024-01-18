@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import { Check, ChevronsUpDown, ShoppingBasket } from 'lucide-svelte';
+	import { ChevronsUpDown } from 'lucide-svelte';
 	import * as Command from '$lib/components/ui/command';
 	import * as Popover from '$lib/components/ui/popover';
 	import { tick } from 'svelte';
@@ -9,10 +9,11 @@
 	import { items } from '$lib/items.json';
 	import { factoryStore } from '$lib/model/factory';
 	import type { slot } from '$lib/model/factory';
+	import Label from './ui/label/label.svelte';
 	let open = false;
 	let value = '';
 	export let factoryName: string;
-	let item: slot = { item: '', amount: 0 };
+	let item: slot = { item: '', amount: 0, quantity: 0 };
 	$: selectedValue = items.find((f) => f.name === value)?.name ?? 'Select a item...';
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
@@ -32,7 +33,10 @@
 				// If the factory exists, add the new slot to its slots array
 				const updatedFactory = {
 					...existingFactory,
-					slots: [...existingFactory.slots, { item: item.item, amount: item.amount }]
+					slots: [
+						...existingFactory.slots,
+						{ item: item.item, amount: item.amount, quantity: item.quantity }
+					]
 				};
 
 				// Replace the existing factory with the updated factory in the array
@@ -41,7 +45,7 @@
 				// If the factory doesn't exist, create a new factory object and add it to the array
 				const newFactory = {
 					name: factoryName,
-					slots: [{ item: item.item, amount: item.amount }]
+					slots: [{ item: item.item, amount: item.amount, quantity: item.quantity }]
 				};
 
 				return [...value, newFactory];
@@ -51,7 +55,7 @@
 	}
 
 	function resetItem() {
-		item = { item: '', amount: 0 };
+		item = { item: '', amount: 0, quantity: 0 };
 		selectedValue = 'Select a item...';
 	}
 </script>
@@ -79,8 +83,9 @@
 			<Dialog.Title>Add item</Dialog.Title>
 		</Dialog.Header>
 		<form>
-			<div class="grid w-full items-center gap-4">
-				<div class="flex w-3/4 gap-4">
+			<div class="flex w-full items-center gap-4">
+				<div class="grid gap-1">
+					<Label for="quantity">Item</Label>
 					<Popover.Root bind:open let:ids>
 						<Popover.Trigger asChild let:builder>
 							<Button
@@ -105,6 +110,7 @@
 											onSelect={(currentValue: string) => {
 												value = currentValue;
 												item.item = currentValue;
+												item.quantity = DDLitem.rate;
 												closeAndFocusTrigger(ids.trigger);
 											}}
 										>
@@ -115,8 +121,24 @@
 							</Command.Root>
 						</Popover.Content>
 					</Popover.Root>
+				</div>
+				<div class="grid w-full items-center gap-1">
+					<Label for="quantity">Per Quarter</Label>
 					<Input
-						class="w-1/5 flex-auto"
+						class="flex-auto"
+						id="quantity"
+						type="number"
+						autocomplete="off"
+						readonly
+						bind:value={item.quantity}
+						on:focus={() =>
+							(item.quantity = Number(item.quantity) < 1 ? null : Number(item.quantity))}
+					/>
+				</div>
+				<div class="grid w-full max-w-sm items-center gap-1">
+					<Label for="amount">Amount</Label>
+					<Input
+						class="flex-auto"
 						id="amount"
 						type="number"
 						autocomplete="off"

@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { factoryStore } from '$lib/model/factory';
-	import type { FactoryInterface } from '$lib/model/factory';
+	import { factoryStore,getFactories } from '$lib/model/factory';
 	import FactoryCard from '$lib/components/FactoryCard.svelte';
 	import ExcessMaterial from '$lib/components/ExcessMaterial.svelte';
 
-	let factories: FactoryInterface[] = [];
+	let factories = getFactories();
 	const unsubscribe = factoryStore.subscribe((value) => {
-		factories = value;
-	});
+		factories = value
+	})
 </script>
 
 <main>

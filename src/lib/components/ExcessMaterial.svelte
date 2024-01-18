@@ -1,50 +1,12 @@
 <script lang="ts">
 	import * as Alert from '$lib/components/ui/alert';
 	import Label from './ui/label/label.svelte';
-	import { items } from '$lib/items.json';
-	import { factoryStore } from '$lib/model/factory';
-	import type { FactoryInterface } from '$lib/model/factory';
+	import { getOverAllmaterials, calculate, factoryStore } from '$lib/model/factory';
 
-	const overAllmaterials = [
-		{
-			name: 'Lumber',
-			quantity: 0
-		},
-		{
-			name: 'Stone',
-			quantity: 0
-		},
-		{
-			name: 'Iron ore',
-			quantity: 0
-		}
-	];
-	let factories: FactoryInterface[] = [];
+	let overAllmaterials = getOverAllmaterials();
 	const unsubscribe = factoryStore.subscribe((value) => {
-		factories = value;
-		overAllmaterials.forEach((material) => {
-			material.quantity = 0;
-		});
-		value.forEach((factory) => {
-			factory.slots.forEach((slot) => {
-				items.forEach((item) => {
-					if (item.name === slot.item && slot.amount !== null) {
-						console.log(overAllmaterials, item.name );
-						const materialIndex = overAllmaterials.findIndex(
-							(material) => material.name == item.name
-						);
-						console.log(materialIndex);
-						if (materialIndex !== -1) {
-							item.operate.forEach((operation) => {
-								if (operation.material === slot.item && slot.amount !== null) {
-									overAllmaterials[materialIndex].quantity += operation.amount * slot.amount;
-								}
-							});
-						}
-					}
-				});
-			});
-		});
+		calculate();
+		overAllmaterials = getOverAllmaterials();
 	});
 </script>
 
@@ -63,7 +25,7 @@
 							<span
 								class="relative rounded bg-muted px-[0.4rem] py-[0.2rem] font-mono text-sm font-semibold"
 							>
-								{material.quantity}
+								{material.quantity} 
 							</span>
 						</Label>
 					</div>

@@ -4,15 +4,9 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Factory } from 'lucide-svelte';
-	import { factoryStore } from '$lib/model/factory';
+	import { addFactory } from '$lib/model/factory';
 
 	let name: string;
-
-	function addFactory() {
-		factoryStore.update((value) => {
-			return [...value, { name: name, slots: [] }];
-		});
-	}
 </script>
 
 <Dialog.Root>
@@ -36,7 +30,7 @@
 				<Button type="button" variant="destructive">Cancel</Button>
 			</Dialog.Close>
 			<Dialog.Close>
-				<Button type="button" variant="default" on:click={addFactory}>Create</Button>
+				<Button type="button" variant="default" on:click={() => addFactory(name)}>Create</Button>
 			</Dialog.Close>
 		</Dialog.Footer>
 	</Dialog.Content>

@@ -2,40 +2,21 @@
 [
     {
         "name": "Lumber",
-        "operate": [
-            {
-                "material": "Lumber",
-                "amount": 1
-            },
+        "rate": 90,
+        "dependent": [
             {
                 "material": "Wood",
-                "amount": -1
+                "amount": 1
             }
         ]
     },
     {
         "name": "Plank",
-        "operate": [
-            {
-                "material": "Plank",
-                "amount": 1
-            },
+        "rate": 60,
+        "dependent": [
             {
                 "material": "Lumber",
-                "amount": -5
-            }
-        ]
-    },
-    {
-        "name": "Iron ingot",
-        "operate": [
-            {
-                "material": "Iron ingot",
-                "amount": 1
-            },
-            {
-                "material": "Iron ore",
-                "amount": -1
+                "amount": 5
             }
         ]
     }
