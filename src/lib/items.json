@@ -1,22 +1,50 @@
 { "items":
 [
     {
-        "name": "Lumber",
+        "name": "Plank",
         "rate": 90,
         "dependent": [
             {
-                "material": "Wood",
-                "amount": 1
+                "material": "Lumber",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 1
             }
         ]
     },
     {
-        "name": "Plank",
+        "name": "Superior Plank",
         "rate": 60,
         "dependent": [
             {
-                "material": "Lumber",
-                "amount": 5
+                "material": "Plank",
+                "amount": 5,
+                "rate": 90,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Iron Ingot",
+        "rate": 90,
+        "dependent": [
+            {
+                "material": "iron ore",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 1
+            }
+        ]
+    },
+    {
+        "name": "Superior Ingot",
+        "rate": 60,
+        "dependent": [
+            {
+                "material": "Iron Ingot",
+                "amount": 5,
+                "rate": 90,
+                "ratio": 0.67
             }
         ]
     }
