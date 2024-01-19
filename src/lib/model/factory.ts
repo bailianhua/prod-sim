@@ -29,17 +29,9 @@ export const overAllmaterials = [
         quantity: 0
     },
     {
-        name: 'Stone',
+        name: 'Superior Plank',
         quantity: 0
     },
-    {
-        name: 'Iron ore',
-        quantity: 0
-    },
-    {
-        name: 'Wood',
-        quantity: 0
-    }
 ];
 
 export function calculate() {
@@ -93,7 +85,8 @@ export function calculateMaterialsNeeded(factoryName : string) {
         }, {});
     itemsMatching.forEach((element) => {
         element.dependent.forEach((dep) => {
-            if(excludedItems.includes(dep.material)) return
+            const foundMaterial = overAllmaterials.find((material) => material.name === dep.material);
+            if(excludedItems.includes(dep.material)|| (foundMaterial && foundMaterial.quantity >= 0)) return
             const slotAmount = itemCounts[element.name];
             const slotNeeded = Math.ceil(dep.ratio * slotAmount.count * dep.amount); 
             for (let i = 0; i < slotNeeded; i++) {

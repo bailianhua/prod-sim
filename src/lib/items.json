@@ -6,7 +6,7 @@
         "dependent": [
             {
                 "material": "Lumber",
-                "amount": 1,
+                "amount": 5,
                 "rate": 1,
                 "ratio": 1
             }
