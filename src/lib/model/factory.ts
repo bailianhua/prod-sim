@@ -88,9 +88,12 @@ export function calculateMaterialsNeeded(factoryName : string) {
             const foundMaterial = overAllmaterials.find((material) => material.name === dep.material);
             if(excludedItems.includes(dep.material)|| (foundMaterial && foundMaterial.quantity >= 0)) return
             const slotAmount = itemCounts[element.name];
-            const slotNeeded = Math.ceil(dep.ratio * slotAmount.count * dep.amount); 
+            const slotNeeded = Math.ceil(dep.ratio * slotAmount.count * dep.amount) - factory?.slots.filter((slot) => slot.item === dep.material).length || 0; 
             for (let i = 0; i < slotNeeded; i++) {
-                addItem(factoryName, { item: dep.material, amount: Math.ceil(slotAmount.totalAmount * dep.amount / slotNeeded), quantity: dep.rate  })
+                const filteredSlots = factory?.slots.filter((slot) => slot.item === dep.material);
+                const sum = filteredSlots?.reduce((total, slot) => total + slot.amount, 0) || 0;
+                console.log(slotAmount.totalAmount,sum, slotNeeded);
+                addItem(factoryName, { item: dep.material, amount: Math.ceil(((slotAmount.totalAmount * dep.amount) - sum) / slotNeeded), quantity: dep.rate  })
             }
         })
     });
