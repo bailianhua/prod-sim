@@ -1,6 +1,7 @@
 {
   "name": "prod-sim",
   "version": "0.0.1",
+  "prepare": "svelte-kit sync",
   "devDependencies": {
     "@playwright/test": "^1.28.1",
     "@sveltejs/adapter-auto": "^3.0.0",
