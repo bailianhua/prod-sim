@@ -70,7 +70,6 @@ export function calculate() {
         for (const slot of factory.slots) {
             for (const item of items) {
                 if (item.name === slot.item && slot.amount && slot.quantity) {
-                    console.log(item.name, overAllmaterials)
                     const material = overAllmaterials.find((material) => material.name === item.name);
                     if (material) {
                         material.quantity += Math.ceil(slot.amount);
