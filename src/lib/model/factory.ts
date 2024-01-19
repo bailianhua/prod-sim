@@ -17,11 +17,11 @@ export interface material {
 }
 
 let factories: FactoryInterface[] = [];
-const excludedItems = ['Stone', 'Iron Ore', 'Lumber'];
+const excludedItems = ['Stone', 'Iron Ore', 'Timber'];
 
 export const overAllmaterials = [
     {
-        name: 'Lumber',
+        name: 'Timber',
         quantity: 0
     },
     {
@@ -29,7 +29,35 @@ export const overAllmaterials = [
         quantity: 0
     },
     {
-        name: 'Superior Plank',
+        name: 'Senior Plank',
+        quantity: 0
+    },
+    {
+        name: 'Iron ore',
+        quantity: 0
+    },
+    {
+        name: 'Iron ingot',
+        quantity: 0
+    },
+    {
+        name: 'Alloy',
+        quantity: 0
+    },
+    {
+        name: 'Stone',
+        quantity: 0
+    },
+    {
+        name: 'Stone material',
+        quantity: 0
+    },
+    {
+        name: 'Marble material',
+        quantity: 0
+    },
+    {
+        name: 'Fur',
         quantity: 0
     },
 ];
@@ -42,16 +70,17 @@ export function calculate() {
         for (const slot of factory.slots) {
             for (const item of items) {
                 if (item.name === slot.item && slot.amount && slot.quantity) {
+                    console.log(item.name, overAllmaterials)
                     const material = overAllmaterials.find((material) => material.name === item.name);
                     if (material) {
                         material.quantity += Math.ceil(slot.amount);
-                        for (const dep of item.dependent) {
-                            const deductMaterial = overAllmaterials.find(
-                                (material) => material.name === dep.material
-                            )
-                            if (deductMaterial) {
-                                deductMaterial.quantity -= dep.amount * slot.amount
-                            }
+                    }
+                    for (const dep of item.dependent) {
+                        const deductMaterial = overAllmaterials.find(
+                            (material) => material.name === dep.material
+                        )
+                        if (deductMaterial) {
+                            deductMaterial.quantity -= dep.amount * slot.amount
                         }
                     }
                 }
@@ -92,7 +121,6 @@ export function calculateMaterialsNeeded(factoryName : string) {
             for (let i = 0; i < slotNeeded; i++) {
                 const filteredSlots = factory?.slots.filter((slot) => slot.item === dep.material);
                 const sum = filteredSlots?.reduce((total, slot) => total + slot.amount, 0) || 0;
-                console.log(slotAmount.totalAmount,sum, slotNeeded);
                 addItem(factoryName, { item: dep.material, amount: Math.ceil(((slotAmount.totalAmount * dep.amount) - sum) / slotNeeded), quantity: dep.rate  })
             }
         })

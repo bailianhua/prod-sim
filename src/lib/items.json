@@ -5,15 +5,15 @@
         "rate": 90,
         "dependent": [
             {
-                "material": "Lumber",
+                "material": "Timber",
                 "amount": 5,
                 "rate": 1,
-                "ratio": 1
+                "ratio": 0.67
             }
         ]
     },
     {
-        "name": "Superior Plank",
+        "name": "Senior Plank",
         "rate": 60,
         "dependent": [
             {
@@ -25,11 +25,65 @@
         ]
     },
     {
-        "name": "Iron Ingot",
+        "name": "Iron ingot",
         "rate": 90,
         "dependent": [
             {
-                "material": "iron ore",
+                "material": "Iron ore",
+                "amount": 5,
+                "rate": 1,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Alloy",
+        "rate": 60,
+        "dependent": [
+            {
+                "material": "Iron ingot",
+                "amount": 5,
+                "rate": 90,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Stone Material",
+        "rate": 90,
+        "dependent": [
+            {
+                "material": "Stone",
+                "amount": 5,
+                "rate": 1,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Marble Material",
+        "rate": 60,
+        "dependent": [
+            {
+                "material": "Stone Material",
+                "amount": 5,
+                "rate": 90,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Plank Bed",
+        "rate": 60,
+        "dependent": [
+            {
+                "material": "Timber",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 1
+            },
+            {
+                "material": "Fur",
                 "amount": 1,
                 "rate": 1,
                 "ratio": 1
@@ -37,13 +91,49 @@
         ]
     },
     {
-        "name": "Superior Ingot",
+        "name": "Thatch Bed",
         "rate": 60,
         "dependent": [
             {
-                "material": "Iron Ingot",
-                "amount": 5,
-                "rate": 90,
+                "material": "Stone",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 0.67
+            },
+            {
+                "material": "Thatched grass",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 0.67
+            },
+            {
+                "material": "Timber",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 0.67
+            }
+        ]
+    },
+    {
+        "name": "Stone Bed",
+        "rate": 60,
+        "dependent": [
+            {
+                "material": "Stone",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 0.67
+            },
+            {
+                "material": "Fur",
+                "amount": 1,
+                "rate": 1,
+                "ratio": 0.67
+            },
+            {
+                "material": "Timber",
+                "amount": 1,
+                "rate": 1,
                 "ratio": 0.67
             }
         ]
